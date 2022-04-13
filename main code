@@ -1,0 +1,60 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[romanian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{blindtext}
+
+
+\title{\textbf{Compararea Teoretică și Experimentală a celor mai cunoscuți Algoritmi de Sortare}}
+\author{Radu Ciobanu\\\\
+Universitatea de Vest, \\
+Facultatea de Matematică și informatică, \\
+Timișoara, România\\
+\textbf{Email:} \texttt{radu.ciobanu02@e-uvt.ro}
+}
+\date{Iunie 2022}
+
+\begin{document}
+\maketitle
+\begin{}
+
+\textbf{Rezumat.}
+În informatică, pentru aranjarea într-o anumită ordine a unor elemente după un anumit criteriu, sunt necesari niște algoritmi de sortare. Exista o multitudine de algoritmi, unii mai eficienți decat alții, dar nu există încă unul perfect. În această lucrare știițifică,
+vom parcurge teoretic si experimental cei mai cunoscuți algoritmi de sortare, dezvăluind mecanicile din spatele fiecăruia; vom hotărî care este mai bun pentru anumite seturi de date, unde și cand ar trebui folosite pentru îndeplinirea scopurilor cu o eficiență semnificativă.  \\  
+După crearea unui program în limbajul C++, am experimentat și notat, pentru trei algoritmi(Quick Sort, Bubble Sort și Insertion Sort) performanța lor în funcție de  timpul de execuție si consumul de energie al procesorului.
+\linebreak
+\\
+\textbf{Cuvinte-cheie:}
+Algoritmi de Sortare, Eficiență  algoritmică, Complexitate, Timp de execuție, Quick Sort, Bubble Sort, Insertion Sort\\
+
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introducere}
+Chestii despre ALgoritmi
+
+\section{Teoria Algoritmilor}
+\subsection{Quick Sort}
+\subsection{Bubble Sort}
+\subsection{Insertion Sort}
+
+\section{Testarea experimentală a Algoritmilor}
+\subsection{Quick Sort}
+\subsection{Bubble Sort}
+\subsection{Insertion Sort}
+
+\section{Discuție}
+
+\section{Concluzii}
+
+\section{Alți Algoritmi}
+
+
+
+
+\end{document}
