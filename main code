@@ -6,7 +6,31 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{blindtext}
+\usepackage{multicol}
+\usepackage[super]{nth}
+\usepackage{listings}
+\usepackage{color}
 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 
 \title{\textbf{Compararea Teoretică și Experimentală a celor mai cunoscuți Algoritmi de Sortare}}
 \author{Radu Ciobanu\\\\
@@ -21,7 +45,7 @@ Timișoara, România\\
 \maketitle
 \begin{}
 
-\textbf{Rezumat.}
+\textit{\textbf{Rezumat.}}
 În informatică, pentru aranjarea într-o anumită ordine a unor elemente după un anumit criteriu, sunt necesari niște algoritmi de sortare. Exista o multitudine de algoritmi, unii mai eficienți decat alții, dar nu există încă unul perfect. În această lucrare știițifică,
 vom parcurge teoretic si experimental cei mai cunoscuți algoritmi de sortare, dezvăluind mecanicile din spatele fiecăruia; vom hotărî care este mai bun pentru anumite seturi de date, unde și cand ar trebui folosite pentru îndeplinirea scopurilor cu o eficiență semnificativă.  \\  
 După crearea unui program în limbajul C++, am experimentat și notat, pentru trei algoritmi(Quick Sort, Bubble Sort și Insertion Sort) performanța lor în funcție de  timpul de execuție si consumul de energie al procesorului.
@@ -35,13 +59,134 @@ Algoritmi de Sortare, Eficiență  algoritmică, Complexitate, Timp de execuție
 \tableofcontents
 \pagebreak
 
+
+
+
+
+
+\begin{multicols}{2}
 \section{Introducere}
-Chestii despre ALgoritmi
+\textit{Sortarea} obiectelor este o acțiune întalnită peste tot în lumea înconjurătoare, fie că ne referim la lucruri complexe precum bazele de date ale unor companii, fie la lucruri simple din viața de zi cu zi, aranjamentul obiectelor casnice, dicționare sau pozițiile sociale. Umanitatea a evoluat odată cu această metodă de a face orice mai eficient când vine vorba de informații de dimensiuni mari. În lumea modernă, orice căutare sau modificare în bazele de date ale internetului ar dura extrem de mult timp pentru a fi efectuată dacă nu ar avea la bază un sistem informatic bun, acesta având la bază tot o anumită sortare. Spre exemplu, dacă am avea o listă cu numele tuturor persoanelor de pe Pământ, ar dura în cel mai rău caz 7.9 miliarde de căutări pentru a găsi numele persoanei respective. Totuși, dacă numele persoanelor ar fi sortate alfabetic, nu ar mai fi necesară o parcurge a tuturor numelor, ci am începe căutarea din punctul în care lista conține același nume de familie; spre exemplu într-un dicționar, pentru a găsi un cuvant care începe cu litera \textit{f} vom începe căutarea din secțiunea cuvintelor care încep cu aceeași literă. Algoritmii de sortare funcționează de obicei în paralel cu căutarea binară pentru maxima eficiență a căutarii; pentru explicații în detaliu a căutării binare vezi [1], totodată și arborii binari, pentru a înțelege mecanismul din spatele aplicațiilor mari precum Google, Facebook etc. Lista algoritmilor de sortare este vastă, conținând tot felul de algoritmi care deși folosesc diferite mecanici de mutare si ordonare a obiectelor, toți au ca scop o sortare completă standard a elementelor într-un timp cât mai scurt, care nu poate scădea sub complexitatea O(nLogn), decât dacă nu este un algoritm liniar de sortare care funcționează pe un tip local de date, totul fiind explicat în detaliu în [2].
+\end{multicols}
+\\
+\linebreak
+
 
 \section{Teoria Algoritmilor}
+\begin{multicols}{2}
+În această secțiune voi explica în parte detaliile teoretice ale algoritmilor de sortare (pentru o analiză mai detaliată a acestora, vezi [3]). După analiza fiecaruia din acest capitol, vor fi prezentate în capitolul 3 toate testele făcute pentru fiecare algoritm, în final făcând o comparație nu doar între rezultatele algoritmilor, dar și între predicțiile teoretice și rezultatele experimentale. De asemenea, în capitolul 6 voi face referire si la performanțele altor algoritmi cunoscuți care nu au fost analizați în detaliu în această lucrare.
+
 \subsection{Quick Sort}
+În volumul 5 din [3], paginile 10-16, Hoare descrie \textit{sortarea rapidă} ca o un principiu de a rezolva o problemă prin divizarea ei în două subprobleme mai simple, procesul repetându-se pană când toate problemele rezultate sunt triviale. Aceste probleme triviale sunt apoi rezolvate folosind metode cunoscute, astfel obțiând rezultatul problemei originale, care era mult mai complexă. Metoda mai este numită și \textit{Divide and Conquer}, care este des întalnită și în alți algoritmi, precum \textit{Merge Sort}. Procesul \textit{cheie} este partiționarea: fiind dat un tablou de elemente și un pivot \textit{x}, \textit{x} este pus pe poziția corectă în tabloul sortat, iar toate elementele mai mici decât \textit{x} sunt puse înaintea sa, iar cele mai mari ca el după. Analiza timpului necesar sortării rapide poate fi scrisă: \begin{math} \\ T(n) = T(k) + T(n-k-1) + \theta(n)\\ \end{math}
+\\Primii doi termeni sunt apeluri recursive, iar ultimul reprezintă procesul de partiționare, unde \textit{k} este numărul de elemente mai mici decât pivotul. Complexitatea acestui algoritm este \textit{O(nLogn)}, cu un caz nefavorabil de \textit{O($n^2$)}. Implementarea  implicită este instabilă și folosește spațiu suplimentar în stivă pentru apelurile recursive. În dreapta avem implementarea sortării rapide prin metoda partiționării:\\
+\begin{lstlisting}
+int partition (int a[], int beg, int end) 
+{  
+    int pivot = a[end]; 
+    int i = (beg - 1); 
+  
+    for (int j = beg; j <= end - 1; j++)  
+    {  
+      
+        if (a[j] < pivot)  
+        {  
+            i++; 
+            swap(&a[i], &a[j]);  
+        }  
+    }  
+    swap(&a[i + 1], &a[end]);  
+    return (i + 1);  
+}  
+  
+
+void quickSort(int a[], int beg, int end)
+{  
+    if (beg < end)  
+    {  
+        
+        int pIndex = partition(a, beg, end);  
+  
+        quickSort(a, beg, pIndex - 1);  
+        quickSort(a, pIndex + 1, end);  
+    }  
+} 
+\end{lstlisting}
+\pagebreak
+
 \subsection{Bubble Sort}
+Începând cu premisa lui Knuth care spune că \textit{"bubble sort pare sa nu aibă nimic care să-l recomande"}[4], acest algoritm de sortare continuă să fie unul dintre cei mai cunoscuți și folosiți algoritmi, în ciuda complexitații sale exponențiale, \textit{O($n^2$)}. Din cauza faptului că sortările necesare în programele uzuale nu conțin un număr mare de elemente(de obicei între 50-150), ineficiența sa nu este remarcată. În schimb, în cazul sortării unui număr mai mare de elemente, bubble sort nu ar putea fi o soluție, timpul executării comparativ cu unul de complexitate \textit{O(nLogn)}ar fi complet diferit. Bubble sort parcurge tabloul de elemente de n ori, apoi de n-1 ori și tot așa pană la capăt, astfel se ajunge la formula:
+
+
+\begin{displaymath}
+T(n) = \sum_{i=1}^{n}(n-i)
+\end{displaymath}
+Alături, avem o implementare simplă a sa, dar și una mai eficientă, asemănătoare \textit{Shaker Sort}(eficiența apare într-un singur loc prin prezența unei variabile booleene \texit{swapped} care reține dacă s-a realizat cel puțin o interschimbare pe parcusul celui de-al doilea \textit{for}; în caz contrar algoritmul se oprește, toate elementele fiind deja sortate.
+\linebreak
+\linebreak
+\linebreak
+\linebreak
+
+\begin{lstlisting}
+\\versiunea simpla
+void bubbleSort(int arr[], int n)
+{
+    int i, j;
+    for (i = 0; i < n - 1; i++)
+        for (j = 0; j < n - i - 1; j++)
+            if (arr[j] > arr[j + 1])
+                swap(&arr[j], &arr[j + 1]);
+}
+
+\\versiunea optimizata
+void bubbleSort(int arr[], int n)
+{
+   int i, j;
+   bool swapped;
+   for (i = 0; i < n-1; i++)
+   {
+     swapped = false;
+     for (j = 0; j < n-i-1; j++)
+     {
+        if (arr[j] > arr[j+1])
+        {
+           swap(&arr[j], &arr[j+1]);
+           swapped = true;
+        }
+     }
+     if (swapped == false)
+        break;
+   }
+}
+\end{lstlisting}
+\pagebreak
+
 \subsection{Insertion Sort}
+Metoda inserării este a treia și ultima sortare testată în această lucrare, care deși nu aduce un punct diferit de analizat față de celelalte două, merită menționat și testat. Algoritmul funcționează după un principiu simplu: fiind un tabloul de sortat parcurs cu index-ul \textit{i}, în urma lui e se formează un tablou sortat; elementul nou de pe poziția \textit{i} este pus corespunzator în tabloul din urma sa pentru a se respecta condiția. Complexitatea și timpul de executare sunt asemănătoare \textit{bubble sort}, O($n^2$) și respectiv \begin{math}
+T(n) = \sum_{i=1}^{n}(n-i).
+\end{math}
+
+În implementarea de mai jos, odată ce se procesează un nou element, se parcurge înapoi față de poziția \texit{i}, făcându-se o translatare la dreapta pană când se poate pozitționa corect elementul.
+
+\begin{lstlisting}
+void insertionSort(int arr[], int n)
+{
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+\end{lstlisting}
+
+\end{multicols}
+
+
+
 
 \section{Testarea experimentală a Algoritmilor}
 \subsection{Quick Sort}
@@ -55,6 +200,21 @@ Chestii despre ALgoritmi
 \section{Alți Algoritmi}
 
 
+\linebreak
+
+\begin{thebibliography}{9}
+\bibitem{texbook}
+Cormen, T.H., Leiserson, C.E., & Rivest, R.L. \textit{Introduction to Algorithms (\nth{2} ed.)} (1 Septembrie 2001).
+
+\bibitem{paper}
+Parimal Mridha, Binoy Jumar Datta. \textit{Algorithm for Analysis the Time Complexity for Iterated Local Search} (28 Iunie 2021)
+
+\bibitem{texbook}
+C.A.R. Hoare, \textit{The Computer Journal} (1 Ianuarie 1962)
 
 
+\bibitem{textbook}
+Knuth, D.E. The dangers of computer science theory, \textit{Logic, Methodology and Philosophy of Science 4} (1973)
+
+\end{thebibliography}
 \end{document}
