@@ -1,0 +1,215 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[romanian]{babel}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+
+
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{black}{rgb}{0,0,0}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{black},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=false,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+
+\lstset{style=mystyle}
+
+
+%\usetheme{Berkeley}
+%\usetheme{Antibes}
+\usetheme{Dresden}
+\setbeamercovered{transparent}
+\title{O comparare Teoretică și Experimentală a celor mai cunoscuți Algoritmi de Sortare}
+\author{Radu Ciobanu\\
+Universitatea de Vest din Timișoara\\
+\texttt{radu.ciobanu02@e-uvt.ro}}
+
+%\date{May 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Motivație}
+\begin{frame}
+\frametitle{}
+\begin{enumerate}[<+-| alert@+>]
+    \item Ce Algoritmi sortăm și din ce complexități?
+    \begin{itemize}
+        \item din $O(nLogn)$: QuickSort, MergeSort
+        \item din $O(n^2)$: InsertionSort, BubbleSort
+    \end{itemize}
+    \item Pe ce set de date se face sortarea? 
+    \begin{itemize}
+        \item pe numere întregi din intervalul [1, 1.000.000]
+        \item pe cifre binare
+        \item setul având lungimi din intervalul [10, 100.000.000]
+    \end{itemize}
+    \item BubbleSort pe 100.000.000 de elemente?
+    \begin{itemize}
+        \item nu, chiar și pe 1.000.000 de elemente ar dura +130 minute
+        \item pentru 100.000.000 ar dura cel puțin o lună
+    \end{itemize}
+    \item O($nLogn$)pe 1.000.000.000 de elemente?
+    \begin{itemize}
+        \item nu, chiar și cu quicksort ar dura aprox. 5.5 zile
+    \end{itemize}
+    
+\end{enumerate}
+\end{frame}
+
+
+
+
+\section{Experiment}
+
+\begin{frame}
+\frametitle{Rezultate experimentale}
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  %  title={Sorting comparison, general case},
+    xmode = log,
+    ymode = log,
+    xlabel={Size },
+    ylabel={Time (ms)},
+    xmin=10, xmax=100000000,
+    ymin=0, ymax=1000000,
+    xtick={10,100,1000,10000,100000,1000000,10000000,100000000},
+    ytick={0.001,0.01,0.1,1,10,100,1000,10000,100000},
+    legend pos=north west,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+    coordinates {
+    (10,0.0006)
+    (100,0.005)
+    (1000,0.06)
+    (1000000,130)
+    (10000000,3330)
+    (100000000,38000)
+    };
+    \legend{QuickSort}
+\addplot[
+    color=green,
+    mark=square,
+    ]
+    coordinates {
+    (10,0.008)
+    (100,0.07)
+    (1000,0.6)
+    (1000000,508)
+    (10000000,5200)
+    (100000000,51428)
+    };
+   \addlegendentry{MergeSort}     
+   
+\addplot[
+    color=black,
+    mark=square,
+    ]
+    coordinates {
+    (10,0.0005)
+    (100,0.006)
+    (1000,0.5)
+    (1000000,500000)
+    };
+    \addlegendentry{InsertionSort}
+    
+\addplot[
+    color=red,
+    mark=square,
+    ]
+    coordinates {
+    (10,0.002)
+    (100,0.9)
+    (1000,7.7)
+    (1000000,7800000)
+    };
+    \addlegendentry{BubbleSort}
+    
+    
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\label{graphSorting}
+\end{figure}
+\end{frame}
+
+
+
+
+\section{Noțiuni}
+\begin{frame}
+\frametitle{Pe scurt...}
+\begin{enumerate}[<+-| alert@+>]
+    \item QuickSort
+    \begin{itemize}
+        \item cel mai eficient 
+        \item pe orice set de date
+    \end{itemize}
+    \item MergeSort 
+    \begin{itemize}
+        \item la fel de eficient ca quicksort pe seturi mari de date [$>10^7$]
+        \item neeficient pe seturi mici de date
+    \end{itemize}
+     \item InsertionSort 
+    \begin{itemize}
+        \item la fel de eficient ca quicksort pe seturi mici de date [10,100]
+        \item neeficient pe seturi mari de date
+    \end{itemize}
+      \item BubbleSort 
+    \begin{itemize}
+        \item cel mai neeficient
+        \item pe orice set de date
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Implementare ușoară QuickSort în Python}
+
+\begin{lstlisting}[language=Python]
+def quicksort(arr):
+    if arr: 
+        pivot = arr[0];
+        below = [i for i in arr[1:] if i < pivot] 
+        above = [i for i in arr[1:] if i >= pivot]
+        return quicksort(below) + [pivot] +
+               quicksort(above);
+    else: 
+        return arr;
+\end{lstlisting}
+\end{frame}
+\end{document}
